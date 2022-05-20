@@ -14,18 +14,116 @@ paths:
             tags:
                 - endpoint
             requestBody:
-                description: 'Create endpoint request: Datails to create a new endpoint'
+                description: 'Create endpoint request: Details to create a new endpoint'
+                content:
+                    application/json:
+                        schema:
+                            $ref: '$/compenents/schemas/EndpointRequestBody'
+            responses:
+                '201':
+                    description: 'Create endpoint response: Details about new endpoint created'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                required:
+                                    - data
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Endpoint'
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+        get:
+            summary: 'Get endpoint: Get endpoint list'
+            operationId: getListEnpoint
+            tags:
+                - endpoint
+            parameters:
+                - $ref: '#/components/parameters/LimitQuery'
+                - $ref: '#/components/parameters/OffsetQuery'
+                - $ref: '#/components/parameters/EndpointStatusQuery'
+            responses:
+                '200':
+                    description: 'Get endpoint response: Details list about endpoint'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                required:
+                                    - data
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Endpoint'
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+    /api/endpoint/{id}:
+        get:
+            summary: 'Get endpoint: Get endpoint by ID'
+            operationId: getEnpointByID
+            tags:
+                - endpoint
+            parameters:
+                - $ref: '#/components/parameters/EndpointIdPath'
+            responses:
+                '200':
+                    description: 'Get endpoint response: Details about endpoint by ID'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                required:
+                                    - data
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Endpoint'
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+        put:
+            summary: 'Update endpoint: Update endpoint by ID'
+            operationId: updateEnpointByID
+            tags:
+                - endpoint
+            parameters:
+                - $ref: '#/components/parameters/EndpointIdPath'
+            requestBody:
+                description: 'Update endpoint request: Details to update endpoint'
                 content:
                     application/json:
                         schema:
                             $ref: '$/compenents/schemas/EndpointRequestBody'
             responses:
                 '200':
-                    description: 'Create endpoint response: Details about new endpoint created'
+                    description: 'Update endpoint response: Endpoint success updated'
+                default:
+                    description: Unexpected error
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/Endpoint'
+                                $ref: '#/components/schemas/Error'
+        delete:
+            summary: 'Delete endpoint: Delete endpoint by ID'
+            operationId: deleteEnpointBuyID
+            tags:
+                - endpoint
+            parameters:
+                - $ref: '#/components/parameters/EndpointIdPath'
+            responses:
+                '200':
+                    description: 'Delete endpoint response: Endpoint success deleted'
                 default:
                     description: Unexpected error
                     content:
@@ -33,6 +131,41 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
 components:
+    parameters:
+        EndpointIdPath:
+            name: id
+            in: path
+            description: Endpoint ID to fetch
+            required: true
+            schema:
+                type: integer
+        LimitQuery:
+            name: limit
+            in: query
+            description: Limit the number of returned results
+            required: false
+            schema:
+                type: integer
+                minimum: 1
+                default: 100
+                format: int32
+        OffsetQuery:
+            name: offset
+            in: query
+            description: Exclude the number of returned results
+            required: false
+            schema:
+                type: integer
+                minimum: 0
+                default: 0
+                format: int32
+        EndpointStatusQuery:
+            name: status
+            in: query
+            description: Define status to filter endpoint results
+            required: false
+            schema:
+                type: string
     schemas:
         EndpointRequestBody:
             type: object
@@ -58,6 +191,12 @@ components:
                 shortUri:
                     type: string
                 tags:
+                    type: string
+                status:
+                    type: string
+                createdAt:
+                    type: string
+                updatedAt:
                     type: string
         Error:
             type: object
