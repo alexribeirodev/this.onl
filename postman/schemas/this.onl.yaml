@@ -1,0 +1,79 @@
+openapi: 3.0.0
+info:
+    version: '1.0.0'
+    title: 'This.onl'
+    license:
+        name: MIT
+servers:
+    - url: 'localhost:3000'
+paths:
+    /api/endpoint:
+        post:
+            summary: 'Create endpoint: Create a new endpoint'
+            operationId: createEnpoint
+            tags:
+                - endpoint
+            requestBody:
+                description: 'Create endpoint request: Datails to create a new endpoint'
+                content:
+                    application/json:
+                        schema:
+                            $ref: '$/compenents/schemas/EndpointRequestBody'
+            responses:
+                '200':
+                    description: 'Create endpoint response: Details about new endpoint created'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Endpoint'
+                default:
+                    description: Unexpected error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+components:
+    schemas:
+        EndpointRequestBody:
+            type: object
+            required:
+                - uri
+            properties:
+                uri:
+                    type: string
+                tags:
+                    type: string
+        Endpoint:
+            type: object
+            required:
+                - id
+                - uri
+                - shortUri
+            properties:
+                id:
+                    type: integer
+                    format: int64
+                uri:
+                    type: string
+                shortUri:
+                    type: string
+                tags:
+                    type: string
+        Error:
+            type: object
+            required:
+                - code
+                - message
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+    securitySchemes:
+        BearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT
+security:
+    - BearerAuth: []
