@@ -7,7 +7,7 @@ info:
 servers:
     - url: 'localhost:3000'
 paths:
-    /api/endpoint:
+    /api/v1/endpoint:
         post:
             summary: 'Create endpoint: Create a new endpoint'
             operationId: createEnpoint
@@ -18,7 +18,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '$/compenents/schemas/EndpointRequestBody'
+                            $ref: '$/components/schemas/EndpointRequestBody'
             responses:
                 '201':
                     description: 'Create endpoint response: Details about new endpoint created'
@@ -66,7 +66,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
-    /api/endpoint/{id}:
+    /api/v1/endpoint/{id}:
         get:
             summary: 'Get endpoint: Get endpoint by ID'
             operationId: getEnpointByID
@@ -104,7 +104,7 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '$/compenents/schemas/EndpointRequestBody'
+                            $ref: '$/components/schemas/EndpointRequestBody'
             responses:
                 '200':
                     description: 'Update endpoint response: Endpoint success updated'
